@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 	int sflag = 1;
 	int board_sz;
 	int board_arg_index;
-	/* start loop from argv[1]*/
+	/* start loop from argv[1] */
 	for (int i = 1; i < argc; i++) {
 		if (!strcmp(argv[i], "-s")) {
 			sflag = 0;
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
 	/* check if the `size` flag value matches the initial board input
 	 * size
 	 */
-	if ((argc - board_arg_index) != (int) pow(board_sz, 2)) {
+	if (argc - board_arg_index != (int) pow(board_sz, 2)) {
 		printf("invalid arguments: board size mismatch\n"
 		       "%s\n", USAGE);
 		exit(-1);
