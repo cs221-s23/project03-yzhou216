@@ -5,6 +5,37 @@
 
 #define USAGE "Usage: ./project03 [-s board size] [initial board state]"
 
+void init_board(int board_sz, char board[][board_sz], char *board_val[])
+{
+	for (int i = 0; i < board_sz; i++) {
+		for (int j = 0; j < board_sz; j++) {
+			board[i][j] = board_val[i * board_sz + j][0];
+		}
+	}
+}
+
+void print_board(int board_sz, char board[][board_sz])
+{
+	for (int i = 0; i < board_sz; i++) {
+		for (int j = 0; j < board_sz; j++) {
+			printf(" %c ", board[i][j]);
+			if (j < board_sz - 1)
+				printf("|");
+		}
+		if (i < board_sz - 1) {
+			printf("\n");
+			for (int k = 0; k < board_sz; k++) {
+				if (k == board_sz - 1)
+					printf("---");
+				else
+					printf("---+");
+			}
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
 int is_int(char *str)
 {
 	for (int i = 0; str[i] != '\0'; i++) {
@@ -60,7 +91,23 @@ int main(int argc, char **argv)
 		exit(-1);
 	}
 
-	for (int i = board_arg_index; i < argc; i++) {
+	char board[board_sz][board_sz];
+
+	/* string array containing the initial board state */
+	char board_val[board_sz * board_sz][2];
+	memset(board_val, sizeof(board_val), 0);
+
+	for (int i = board_arg_index, j = 0;
+	     i < argc && j < board_sz * board_sz;
+	     i++, j++) {
+		strncpy(board_val[j], argv[i], 2);
+	}
+
+	/* hack to match the type of the two dimensional array */
+	char *board_val_arr[board_sz * board_sz];
+	for (int i = 0; i < board_sz * board_sz; i++) {
+		board_val_arr[i] = malloc(2 * sizeof(char));
+		strncpy(board_val_arr[i], board_val[i], 2);
 	}
 
 	return 0;
