@@ -37,6 +37,72 @@ void print_board(int board_sz, char board[][board_sz])
 	printf("\n");
 }
 
+/* known bug: check_board function only checks 3 * 3 instead n * n */
+int check_board(int board_sz, char board[][board_sz])
+{
+	for (int i = 0; i < board_sz; i++) {
+		/* row */
+		if (board[i][0] == board[i][1] && board[i][1] == board[i][2]) {
+			if (board[i][0] == 'X')
+				return 1; /* X wins */
+			else if (board[i][0] == 'O')
+				return -1; /* O wins */
+		}
+
+		/* column */
+		if (board[0][i] == board[1][i] && board[1][i] == board[2][i]) {
+			if (board[0][i] == 'X')
+				return 1; /* X wins */
+			else if (board[0][i] == 'O')
+				return -1; /* O wins */
+		}
+	}
+
+	/* backward diagnol */
+	if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
+		if (board[0][0] == 'X')
+			return 1;
+		else if (board[0][0] == 'O')
+			return -1;
+	}
+
+	/* forward diagnol */
+	if (board[0][2] == board[1][1] && board[1][1] == board[2][0]) {
+		if (board[0][2] == 'X')
+			return 1; /* X wins */
+		else if (board[0][2] == 'O')
+			return -1; /* O wins */
+	}
+
+	/* termination state */
+	for (int i = 0; i < board_sz; i++) {
+		for (int j = 0; j < board_sz; j++) {
+			if (board[i][j] == '_')
+				return 2; /* unfinished */
+		}
+	}
+
+	/* draw */
+	return 0;
+}
+
+void print_res(int res)
+{
+	switch (res) {
+		case 1:
+			printf("X wins\n");
+			break;
+		case -1:
+			printf("O wins\n");
+			break;
+		case 2:
+			printf("unfinished\n");
+			break;
+		default:
+			printf("draw\n");
+	}
+}
+
 int is_int(char *str)
 {
 	for (int i = 0; str[i] != '\0'; i++) {
@@ -106,6 +172,8 @@ int main(int argc, char **argv)
 
 	init_board(board_sz, board, board_val);
 	print_board(board_sz, board);
+
+	print_res(check_board(board_sz, board));
 
 	return 0;
 }
