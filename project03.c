@@ -53,12 +53,11 @@ int check_board(int board_sz, char board[][board_sz])
 			}
 		}
 		if (repeated == 0) {
-			if (href == 'X') {
-				return 1;
-			} else if (href == 'O') {
-				return -1;
-			} else {
-				break;
+			switch (href) {
+				case 'X':
+					return 1;
+				case 'O':
+					return -1;
 			}
 		}
 		repeated = 0;
@@ -72,12 +71,11 @@ int check_board(int board_sz, char board[][board_sz])
 			}
 		}
 		if (repeated == 0) {
-			if (vref == 'X') {
-				return 1;
-			} else if (vref == 'O') {
-				return -1;
-			} else {
-				break;
+			switch (vref) {
+				case 'X':
+					return 1;
+				case 'O':
+					return -1;
 			}
 		}
 		repeated = 0;
