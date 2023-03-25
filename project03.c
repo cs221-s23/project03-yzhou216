@@ -40,22 +40,27 @@ void print_board(int board_sz, char board[][board_sz])
 /* known bug: check_board function only checks 3 * 3 instead n * n */
 int check_board(int board_sz, char board[][board_sz])
 {
+	char href;
+	int repeated = 0;
 	for (int i = 0; i < board_sz; i++) {
-		/* row */
-		if (board[i][0] == board[i][1] && board[i][1] == board[i][2]) {
-			if (board[i][0] == 'X')
-				return 1; /* X wins */
-			else if (board[i][0] == 'O')
-				return -1; /* O wins */
+		/* horizontal */
+		href = board[i][0];
+		for (int j = 1; j < board_sz; j ++) {
+			if (board[i][j] != href) {
+				repeated = 1;
+				break;
+			}
 		}
-
-		/* column */
-		if (board[0][i] == board[1][i] && board[1][i] == board[2][i]) {
-			if (board[0][i] == 'X')
-				return 1; /* X wins */
-			else if (board[0][i] == 'O')
-				return -1; /* O wins */
+		if (repeated == 0) {
+			if (href == 'X') {
+				return 1;
+			} else if (href == 'O') {
+				return -1;
+			} else {
+				break;
+			}
 		}
+		repeated = 0;
 	}
 
 	/* backward diagnol */
