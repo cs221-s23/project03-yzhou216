@@ -103,5 +103,8 @@ int main(int argc, char **argv)
 		strncpy(board_val[j], argv[i], 2);
 	}
 
+	init_board(board_sz, board, board_val);
+	print_board(board_sz, board);
+
 	return 0;
 }
