@@ -5,7 +5,7 @@
 
 #define USAGE "Usage: ./project03 [-s board size] [initial board state]"
 
-void init_board(int board_sz, char board[][board_sz], char *board_val[])
+void init_board(int board_sz, char board[][board_sz], char board_val[][2])
 {
 	for (int i = 0; i < board_sz; i++) {
 		for (int j = 0; j < board_sz; j++) {
@@ -101,13 +101,6 @@ int main(int argc, char **argv)
 	     i < argc && j < board_sz * board_sz;
 	     i++, j++) {
 		strncpy(board_val[j], argv[i], 2);
-	}
-
-	/* hack to match the type of the two dimensional array */
-	char *board_val_arr[board_sz * board_sz];
-	for (int i = 0; i < board_sz * board_sz; i++) {
-		board_val_arr[i] = malloc(2 * sizeof(char));
-		strncpy(board_val_arr[i], board_val[i], 2);
 	}
 
 	return 0;
