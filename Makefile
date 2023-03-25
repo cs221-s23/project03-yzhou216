@@ -6,7 +6,7 @@ TMP = $(PROG) $(OBJS)
 	gcc -c -g -o $@ $<
 
 $(PROG): $(OBJS)
-	gcc -g -o $@ $^
+	gcc -g -o $@ $^ -lm
 
 clean:
 	rm -rf $(TMP)

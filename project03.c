@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <ctype.h>
 
 #define USAGE "Usage: ./project03 [-s board size] [initial board state]"
@@ -85,7 +86,7 @@ int main(int argc, char **argv)
 	/* check if the `size` flag value matches the initial board input
 	 * size
 	 */
-	if ((argc - board_arg_index) != (board_sz * board_sz)) {
+	if ((argc - board_arg_index) != (int) pow(board_sz, 2)) {
 		printf("invalid arguments: board size mismatch\n"
 		       "%s\n", USAGE);
 		exit(-1);
@@ -94,11 +95,11 @@ int main(int argc, char **argv)
 	char board[board_sz][board_sz];
 
 	/* string array containing the initial board state */
-	char board_val[board_sz * board_sz][2];
+	char board_val[(int) pow(board_sz, 2)][2];
 	memset(board_val, sizeof(board_val), 0);
 
 	for (int i = board_arg_index, j = 0;
-	     i < argc && j < board_sz * board_sz;
+	     i < argc && j < (int) pow(board_sz, 2);
 	     i++, j++) {
 		strncpy(board_val[j], argv[i], 2);
 	}
