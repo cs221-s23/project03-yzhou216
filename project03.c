@@ -41,6 +41,7 @@ void print_board(int board_sz, char board[][board_sz])
 int check_board(int board_sz, char board[][board_sz])
 {
 	char href;
+	char vref;
 	int repeated = 0;
 	for (int i = 0; i < board_sz; i++) {
 		/* horizontal */
@@ -55,6 +56,25 @@ int check_board(int board_sz, char board[][board_sz])
 			if (href == 'X') {
 				return 1;
 			} else if (href == 'O') {
+				return -1;
+			} else {
+				break;
+			}
+		}
+		repeated = 0;
+
+		/* vertical */
+		vref = board[0][i];
+		for (int j = 0; j < board_sz; j ++) {
+			if (board[j][i] != vref) {
+				repeated = 1;
+				break;
+			}
+		}
+		if (repeated == 0) {
+			if (vref == 'X') {
+				return 1;
+			} else if (vref == 'O') {
 				return -1;
 			} else {
 				break;
