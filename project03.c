@@ -222,13 +222,30 @@ int main(int argc, char **argv)
 		strncpy(board_val[j], argv[i], 2);
 	}
 
+	int X_count = 0;
+	int O_count = 0;
 	for (int i = 0; i < (int) pow(board_sz, 2); i++) {
+		if (!strcmp(board_val[i], "X"))
+			X_count++;
+		if (!strcmp(board_val[i], "O"))
+			O_count++;
+
 		if (strcmp(board_val[i], "X") &&
 		    strcmp(board_val[i], "O") &&
 		    strcmp(board_val[i], "_")) {
 			printf("illegal board input\n");
 			exit(-1);
 		}
+	}
+
+	/*
+	 * X_count must be either equal to or one more than O_count, since the
+	 * program only plays O
+	 */
+	int XO_diff = X_count - O_count;
+	if (XO_diff != 1 && XO_diff != 0) {
+		printf("illegal board input\n");
+		exit(-1);
 	}
 
 	init_board(board_sz, board, board_val);
