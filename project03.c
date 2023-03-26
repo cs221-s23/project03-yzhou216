@@ -100,7 +100,7 @@ int check_board(int board_sz, char board[][board_sz])
 	ref = board[0][board_sz - 1];
 	for (int i = 0; i < board_sz; i++) {
 		for (int j = 0; j < board_sz; j++) {
-			if (i + j == 2) {
+			if (i + j == board_sz - 1) {
 				if (board[i][j] != ref) {
 					repeated = 1;
 					break;
