@@ -57,31 +57,42 @@ int check_board(int board_sz, char board[][board_sz])
 	for (int i = 0; i < board_sz; i++) {
 		/* horizontal */
 		ref = board[i][0];
-		for (int j = 1; j < board_sz; j ++) {
-			if (board[i][j] != ref) {
-				repeated = 1;
-				break;
+		/*
+		 * If ref is '_', escape to the next iteration because it
+		 * indicates that the current coordinates don't determine the
+		 * winner.
+		 */
+		if (ref != '_') {
+			for (int j = 1; j < board_sz; j++) {
+				if (board[i][j] != ref) {
+					repeated = 1;
+					break;
+				}
 			}
+			if (!repeated)
+				return check_win(ref);
+			repeated = 0;
 		}
-		if (!repeated)
-			return check_win(ref);
-		repeated = 0;
 
 		/* vertical */
 		ref = board[0][i];
-		for (int j = 0; j < board_sz; j ++) {
-			if (board[j][i] != ref) {
-				repeated = 1;
-				break;
+		if (ref != '_') {
+			for (int j = 0; j < board_sz; j++) {
+				if (board[j][i] != ref) {
+					repeated = 1;
+					break;
+				}
 			}
+			if (!repeated)
+				return check_win(ref);
+			repeated = 0;
 		}
-		if (!repeated)
-			return check_win(ref);
-		repeated = 0;
 	}
 
 	/* backward diagonal */
 	ref = board[0][0];
+	if (ref == '_')
+		goto for_diag;
 	for (int i = 0; i < board_sz; i++) {
 		for (int j = 0; j < board_sz; j++) {
 			if (i == j) {
@@ -96,8 +107,11 @@ int check_board(int board_sz, char board[][board_sz])
 		return check_win(ref);
 	repeated = 0;
 
+for_diag:
 	/* forward diagonal */
 	ref = board[0][board_sz - 1];
+	if (ref == '_')
+		goto term_state;
 	for (int i = 0; i < board_sz; i++) {
 		for (int j = 0; j < board_sz; j++) {
 			if (i + j == board_sz - 1) {
@@ -112,6 +126,7 @@ int check_board(int board_sz, char board[][board_sz])
 		return check_win(ref);
 	repeated = 0;
 
+term_state:
 	/* termination state */
 	for (int i = 0; i < board_sz; i++) {
 		for (int j = 0; j < board_sz; j++) {
