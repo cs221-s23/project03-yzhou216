@@ -136,6 +136,32 @@ term_state:
 	return 0;
 }
 
+int mm(int board_sz, char board[][board_sz])
+{
+	/* dummy place holder return for debugging purpose */
+	return 1;
+}
+
+void best_move(int board_sz, char board[][board_sz],
+	       int *move_r, int *move_c)
+{
+	int best_score = -9999;
+	for (int i = 0; i < board_sz; i++) {
+		for (int j = 0; j < board_sz; j++) {
+			if (board[i][j] == '_') {
+				board[i][j] = 'O';
+				int score = mm(board_sz, board);
+				board[i][j] = '_';
+				if (score > best_score) {
+					best_score = score;
+					*move_r = i;
+					*move_c = j;
+				}
+			}
+		}
+	}
+}
+
 void print_res(int res)
 {
 	switch (res) {
@@ -251,7 +277,12 @@ int main(int argc, char **argv)
 	init_board(board_sz, board, board_val);
 	print_board(board_sz, board);
 
-	print_res(check_board(board_sz, board));
+	int move_r;
+	int move_c;
+	best_move(board_sz, board, &move_r, &move_c);
+	printf("O: %d %d\n", move_r, move_c);
+
+	//print_res(check_board(board_sz, board));
 
 	return 0;
 }
