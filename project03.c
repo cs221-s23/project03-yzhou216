@@ -42,6 +42,7 @@ int check_board(int board_sz, char board[][board_sz])
 {
 	char ref;
 	int repeated = 0;
+
 	for (int i = 0; i < board_sz; i++) {
 		/* horizontal */
 		ref = board[i][0];
@@ -81,20 +82,48 @@ int check_board(int board_sz, char board[][board_sz])
 	}
 
 	/* backward diagnol */
-	if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
-		if (board[0][0] == 'X')
-			return 1;
-		else if (board[0][0] == 'O')
-			return -1;
+	ref = board[0][0];
+	for (int i = 0; i < board_sz; i++) {
+		for (int j = 0; j < board_sz; j++) {
+			if (i == j) {
+				if (board[i][j] != ref) {
+					repeated = 1;
+					break;
+				}
+			}
+		}
 	}
+	if (!repeated) {
+		switch (ref) {
+			case 'X':
+				return 1;
+			case 'O':
+				return -1;
+		}
+	}
+	repeated = 0;
 
 	/* forward diagnol */
-	if (board[0][2] == board[1][1] && board[1][1] == board[2][0]) {
-		if (board[0][2] == 'X')
-			return 1; /* X wins */
-		else if (board[0][2] == 'O')
-			return -1; /* O wins */
+	ref = board[0][board_sz - 1];
+	for (int i = 0; i < board_sz; i++) {
+		for (int j = 0; j < board_sz; j++) {
+			if (i + j == 2) {
+				if (board[i][j] != ref) {
+					repeated = 1;
+					break;
+				}
+			}
+		}
 	}
+	if (!repeated) {
+		switch (ref) {
+			case 'X':
+				return 1;
+			case 'O':
+				return -1;
+		}
+	}
+	repeated = 0;
 
 	/* termination state */
 	for (int i = 0; i < board_sz; i++) {
