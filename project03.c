@@ -334,7 +334,5 @@ int main(int argc, char **argv)
 	best_move(board_sz, board, &move_r, &move_c);
 	printf("O: %d %d\n", move_r, move_c);
 
-	//print_res(check_board(board_sz, board));
-
 	return 0;
 }
