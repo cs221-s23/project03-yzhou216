@@ -49,7 +49,6 @@ int check_win(char ref) {
 	}
 }
 
-/* known bug: check_board function only checks 3 * 3 instead n * n */
 int check_board(int board_sz, char board[][board_sz])
 {
 	char ref;
