@@ -181,6 +181,22 @@ int mm(int board_sz, char board[][board_sz], int depth, int is_max)
 void best_move(int board_sz, char board[][board_sz],
 	       int *move_r, int *move_c)
 {
+	/* check if the board is empty */
+	int repeated = 0;
+	for (int i = 0; i < board_sz; i++) {
+		for (int j = 0; j < board_sz; j++) {
+			if (board[i][j] != '_') {
+				repeated = 1;
+				break;
+			}
+		}
+	}
+	if (!repeated) {
+		*move_r = 0;
+		*move_c = 0;
+		return;
+	}
+
 	int best_score = INT_MIN;
 	for (int i = 0; i < board_sz; i++) {
 		for (int j = 0; j < board_sz; j++) {
