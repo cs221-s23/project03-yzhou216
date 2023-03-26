@@ -37,6 +37,18 @@ void print_board(int board_sz, char board[][board_sz])
 	printf("\n");
 }
 
+int check_win(char ref) {
+	switch (ref) {
+		case 'X':
+			return 1;
+		case 'O':
+			return -1;
+		default:
+			printf("illegal board input\n");
+			exit(-1);
+	}
+}
+
 /* known bug: check_board function only checks 3 * 3 instead n * n */
 int check_board(int board_sz, char board[][board_sz])
 {
@@ -52,14 +64,8 @@ int check_board(int board_sz, char board[][board_sz])
 				break;
 			}
 		}
-		if (!repeated) {
-			switch (ref) {
-				case 'X':
-					return 1;
-				case 'O':
-					return -1;
-			}
-		}
+		if (!repeated)
+			return check_win(ref);
 		repeated = 0;
 
 		/* vertical */
@@ -70,14 +76,8 @@ int check_board(int board_sz, char board[][board_sz])
 				break;
 			}
 		}
-		if (!repeated) {
-			switch (ref) {
-				case 'X':
-					return 1;
-				case 'O':
-					return -1;
-			}
-		}
+		if (!repeated)
+			return check_win(ref);
 		repeated = 0;
 	}
 
@@ -93,14 +93,8 @@ int check_board(int board_sz, char board[][board_sz])
 			}
 		}
 	}
-	if (!repeated) {
-		switch (ref) {
-			case 'X':
-				return 1;
-			case 'O':
-				return -1;
-		}
-	}
+	if (!repeated)
+		return check_win(ref);
 	repeated = 0;
 
 	/* forward diagonal */
@@ -115,14 +109,8 @@ int check_board(int board_sz, char board[][board_sz])
 			}
 		}
 	}
-	if (!repeated) {
-		switch (ref) {
-			case 'X':
-				return 1;
-			case 'O':
-				return -1;
-		}
-	}
+	if (!repeated)
+		return check_win(ref);
 	repeated = 0;
 
 	/* termination state */
