@@ -189,7 +189,8 @@ int main(int argc, char **argv)
 
 			board_sz = atoi(argv[i + 1]);
 
-			/* initial boar states starts at
+			/*
+			 * initial boar states starts at
 			 * argv[board_arg_index]
 			 */
 			board_arg_index = i + 2;
@@ -202,7 +203,8 @@ int main(int argc, char **argv)
 		board_arg_index = 1;
 	}
 
-	/* check if the `size` flag value matches the initial board input
+	/*
+	 * check if the `size` flag value matches the initial board input
 	 * size
 	 */
 	if (argc - board_arg_index != (int) pow(board_sz, 2)) {
