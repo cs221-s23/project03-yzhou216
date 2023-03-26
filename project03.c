@@ -51,7 +51,7 @@ int check_board(int board_sz, char board[][board_sz])
 				break;
 			}
 		}
-		if (repeated == 0) {
+		if (!repeated) {
 			switch (ref) {
 				case 'X':
 					return 1;
@@ -69,7 +69,7 @@ int check_board(int board_sz, char board[][board_sz])
 				break;
 			}
 		}
-		if (repeated == 0) {
+		if (!repeated) {
 			switch (ref) {
 				case 'X':
 					return 1;
