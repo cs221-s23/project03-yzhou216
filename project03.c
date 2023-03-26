@@ -136,10 +136,46 @@ term_state:
 	return 0;
 }
 
-int mm(int board_sz, char board[][board_sz])
+int mm(int board_sz, char board[][board_sz], int depth, int is_max)
 {
-	/* dummy place holder return for debugging purpose */
-	return 1;
+	if (check_board(board_sz, board) == 1)
+		return -10;
+	else if (check_board(board_sz, board) == -1)
+		return 10;
+	else if (check_board(board_sz, board) == 0)
+		return 0;
+
+	if (is_max == 0) {
+		int best_score = INT_MIN;
+		for (int i = 0; i < board_sz; i++) {
+			for (int j = 0; j < board_sz; j++) {
+				if (board[i][j] == '_') {
+					board[i][j] = 'O'; /* program */
+					int score = mm(board_sz, board,
+						       depth + 1, 1);
+					board[i][j] = '_'; /* reset */
+					best_score = (int) fmax(score,
+								best_score);
+				}
+			}
+		}
+		return best_score;
+	} else {
+		int best_score = INT_MAX;
+		for (int i = 0; i < board_sz; i++) {
+			for (int j = 0; j < board_sz; j++) {
+				if (board[i][j] == '_') {
+					board[i][j] = 'X'; /* human */
+					int score = mm(board_sz, board,
+						       depth + 1, 0);
+					board[i][j] = '_'; /* reset */
+					best_score = (int) fmin(score,
+								best_score);
+				}
+			}
+		}
+		return best_score;
+	}
 }
 
 void best_move(int board_sz, char board[][board_sz],
@@ -149,8 +185,8 @@ void best_move(int board_sz, char board[][board_sz],
 	for (int i = 0; i < board_sz; i++) {
 		for (int j = 0; j < board_sz; j++) {
 			if (board[i][j] == '_') {
-				board[i][j] = 'O';
-				int score = mm(board_sz, board);
+				board[i][j] = 'O'; /* program */
+				int score = mm(board_sz, board, 0, 1);
 				board[i][j] = '_';
 				if (score > best_score) {
 					best_score = score;
