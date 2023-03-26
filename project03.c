@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
+#include <limits.h>
 
 #define USAGE "Usage: ./project03 [-s board size] [initial board state]"
 
@@ -144,7 +145,7 @@ int mm(int board_sz, char board[][board_sz])
 void best_move(int board_sz, char board[][board_sz],
 	       int *move_r, int *move_c)
 {
-	int best_score = -9999;
+	int best_score = INT_MIN;
 	for (int i = 0; i < board_sz; i++) {
 		for (int j = 0; j < board_sz; j++) {
 			if (board[i][j] == '_') {
