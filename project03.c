@@ -81,7 +81,7 @@ int check_board(int board_sz, char board[][board_sz])
 		repeated = 0;
 	}
 
-	/* backward diagnol */
+	/* backward diagonal */
 	ref = board[0][0];
 	for (int i = 0; i < board_sz; i++) {
 		for (int j = 0; j < board_sz; j++) {
@@ -103,7 +103,7 @@ int check_board(int board_sz, char board[][board_sz])
 	}
 	repeated = 0;
 
-	/* forward diagnol */
+	/* forward diagonal */
 	ref = board[0][board_sz - 1];
 	for (int i = 0; i < board_sz; i++) {
 		for (int j = 0; j < board_sz; j++) {
