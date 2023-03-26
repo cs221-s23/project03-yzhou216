@@ -34,7 +34,6 @@ void print_board(int board_sz, char board[][board_sz])
 		}
 		printf("\n");
 	}
-	printf("\n");
 }
 
 int check_win(char ref) {
