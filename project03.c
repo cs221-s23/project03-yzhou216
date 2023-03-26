@@ -43,9 +43,6 @@ int check_win(char ref) {
 			return 1;
 		case 'O':
 			return -1;
-		default:
-			printf("illegal board input\n");
-			exit(-1);
 	}
 }
 
@@ -223,6 +220,15 @@ int main(int argc, char **argv)
 	     i < argc && j < (int) pow(board_sz, 2);
 	     i++, j++) {
 		strncpy(board_val[j], argv[i], 2);
+	}
+
+	for (int i = 0; i < (int) pow(board_sz, 2); i++) {
+		if (strcmp(board_val[i], "X") &&
+		    strcmp(board_val[i], "O") &&
+		    strcmp(board_val[i], "_")) {
+			printf("illegal board input\n");
+			exit(-1);
+		}
 	}
 
 	init_board(board_sz, board, board_val);
