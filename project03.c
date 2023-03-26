@@ -243,6 +243,7 @@ int is_int(char *str)
 int main(int argc, char **argv)
 {
 	int sflag = 1;
+	int interact = 1;
 	int board_sz;
 	int board_arg_index;
 	/* start loop from argv[1] */
@@ -278,61 +279,103 @@ int main(int argc, char **argv)
 		board_arg_index = 1;
 	}
 
+	if (argc < 4) {
+		interact = 0;
+	}
+
 	/*
 	 * check if the `size` flag value matches the initial board input
 	 * size
 	 */
-	if (argc - board_arg_index != (int) pow(board_sz, 2)) {
-		printf("invalid arguments: board size mismatch\n"
-		       "%s\n", USAGE);
-		exit(-1);
-	}
+	if (interact) {
+		if (argc - board_arg_index != (int) pow(board_sz, 2)) {
+			printf("invalid arguments: board size mismatch\n"
+			       "%s\n", USAGE);
+			exit(-1);
+		}
 
-	char board[board_sz][board_sz];
+		char board[board_sz][board_sz];
 
-	/* string array containing the initial board state */
-	char board_val[(int) pow(board_sz, 2)][2];
-	memset(board_val, sizeof(board_val), 0);
+		/* string array containing the initial board state */
+		char board_val[(int) pow(board_sz, 2)][2];
+		memset(board_val, sizeof(board_val), 0);
 
-	for (int i = board_arg_index, j = 0;
-	     i < argc && j < (int) pow(board_sz, 2);
-	     i++, j++) {
-		strncpy(board_val[j], argv[i], 2);
-	}
+		for (int i = board_arg_index, j = 0;
+		     i < argc && j < (int) pow(board_sz, 2);
+		     i++, j++) {
+			strncpy(board_val[j], argv[i], 2);
+		}
 
-	int X_count = 0;
-	int O_count = 0;
-	for (int i = 0; i < (int) pow(board_sz, 2); i++) {
-		if (!strcmp(board_val[i], "X"))
-			X_count++;
-		if (!strcmp(board_val[i], "O"))
-			O_count++;
+		int X_count = 0;
+		int O_count = 0;
+		for (int i = 0; i < (int) pow(board_sz, 2); i++) {
+			if (!strcmp(board_val[i], "X"))
+				X_count++;
+			if (!strcmp(board_val[i], "O"))
+				O_count++;
 
-		if (strcmp(board_val[i], "X") &&
-		    strcmp(board_val[i], "O") &&
-		    strcmp(board_val[i], "_")) {
+			if (strcmp(board_val[i], "X") &&
+			    strcmp(board_val[i], "O") &&
+			    strcmp(board_val[i], "_")) {
+				printf("illegal board input\n");
+				exit(-1);
+			}
+		}
+
+		/*
+		 * X_count must be either equal to or one more than O_count
+		 * since the program only plays O
+		 */
+		int XO_diff = X_count - O_count;
+		if (XO_diff != 1 && XO_diff != 0) {
 			printf("illegal board input\n");
 			exit(-1);
 		}
+
+		init_board(board_sz, board, board_val);
+		print_board(board_sz, board);
+
+		int move_r;
+		int move_c;
+		best_move(board_sz, board, &move_r, &move_c);
+		printf("O: %d %d\n", move_r, move_c);
+
+		return 0;
 	}
 
-	/*
-	 * X_count must be either equal to or one more than O_count, since the
-	 * program only plays O
-	 */
-	int XO_diff = X_count - O_count;
-	if (XO_diff != 1 && XO_diff != 0) {
-		printf("illegal board input\n");
-		exit(-1);
+	/* interactive when argc < 4 */
+	board_sz = 3;
+	char board[board_sz][board_sz];
+	for (int i = 0; i < board_sz; i++) {
+		for (int j = 0; j < board_sz; j++) {
+			board[i][j] = '_';
+		}
 	}
 
-	init_board(board_sz, board, board_val);
 	print_board(board_sz, board);
 
-	int move_r;
-	int move_c;
-	best_move(board_sz, board, &move_r, &move_c);
-	printf("O: %d %d\n", move_r, move_c);
+	int game_over = 1;
+	while (game_over) {
+		int r;
+		int c;
+		printf("row: ");
+		scanf("%d", &r);
+		printf("col: ");
+		scanf("%d", &c);
+		board[r][c] = 'X';
+
+		int move_r;
+		int move_c;
+		best_move(board_sz, board, &move_r, &move_c);
+		board[move_r][move_c] = 'O';
+		printf("\n");
+		print_board(board_sz, board);
+
+		if (check_board(board_sz, board) < 1) {
+			print_res(check_board(board_sz, board));
+			game_over = 0;
+		}
+	}
 
 	return 0;
 }
