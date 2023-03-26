@@ -40,20 +40,19 @@ void print_board(int board_sz, char board[][board_sz])
 /* known bug: check_board function only checks 3 * 3 instead n * n */
 int check_board(int board_sz, char board[][board_sz])
 {
-	char href;
-	char vref;
+	char ref;
 	int repeated = 0;
 	for (int i = 0; i < board_sz; i++) {
 		/* horizontal */
-		href = board[i][0];
+		ref = board[i][0];
 		for (int j = 1; j < board_sz; j ++) {
-			if (board[i][j] != href) {
+			if (board[i][j] != ref) {
 				repeated = 1;
 				break;
 			}
 		}
 		if (repeated == 0) {
-			switch (href) {
+			switch (ref) {
 				case 'X':
 					return 1;
 				case 'O':
@@ -63,15 +62,15 @@ int check_board(int board_sz, char board[][board_sz])
 		repeated = 0;
 
 		/* vertical */
-		vref = board[0][i];
+		ref = board[0][i];
 		for (int j = 0; j < board_sz; j ++) {
-			if (board[j][i] != vref) {
+			if (board[j][i] != ref) {
 				repeated = 1;
 				break;
 			}
 		}
 		if (repeated == 0) {
-			switch (vref) {
+			switch (ref) {
 				case 'X':
 					return 1;
 				case 'O':
