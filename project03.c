@@ -367,9 +367,11 @@ int main(int argc, char **argv)
 		int r;
 		int c;
 		printf("row: ");
-		scanf("%d", &r);
+		if (!scanf("%d", &r) || r < 0 || r > 2)
+			goto scanf_error;
 		printf("col: ");
-		scanf("%d", &c);
+		if (!scanf("%d", &c) || c < 0 || c > 2)
+			goto scanf_error;
 		board[r][c] = 'X';
 
 		int move_r;
@@ -386,4 +388,8 @@ int main(int argc, char **argv)
 	}
 
 	return 0;
+
+scanf_error:
+	printf("scanf failed: illegal coordinate input\n");
+	exit(-1);
 }
