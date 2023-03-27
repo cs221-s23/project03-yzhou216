@@ -360,6 +360,7 @@ int main(int argc, char **argv)
 		}
 	}
 
+	system("clear");
 	print_board(board_sz, board);
 
 	int game_over = 1;
@@ -375,13 +376,13 @@ int main(int argc, char **argv)
 		if (!scanf("%d", &c) || c < 0 || c > 2)
 			goto scanf_error;
 
+		system("clear");
 		board[r][c] = 'X';
 
 		int move_r;
 		int move_c;
 		best_move(board_sz, board, &move_r, &move_c);
 		board[move_r][move_c] = 'O';
-		printf("\n");
 		print_board(board_sz, board);
 
 		if (check_board(board_sz, board) < 1) {
