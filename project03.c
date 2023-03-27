@@ -366,12 +366,15 @@ int main(int argc, char **argv)
 	while (game_over) {
 		int r;
 		int c;
+
 		printf("row: ");
 		if (!scanf("%d", &r) || r < 0 || r > 2)
 			goto scanf_error;
+
 		printf("col: ");
 		if (!scanf("%d", &c) || c < 0 || c > 2)
 			goto scanf_error;
+
 		board[r][c] = 'X';
 
 		int move_r;
