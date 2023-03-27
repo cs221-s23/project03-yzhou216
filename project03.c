@@ -202,6 +202,14 @@ void best_move(int board_sz, char board[][board_sz],
 		for (int j = 0; j < board_sz; j++) {
 			if (board[i][j] == '_') {
 				board[i][j] = 'O'; /* program */
+				if (check_board(board_sz, board) == 1 ||
+				    check_board(board_sz, board) == -1 ||
+				    check_board(board_sz, board) == 0) {
+					*move_r = i;
+					*move_c = j;
+					board[i][j] = '_';
+					return;
+				}
 				int score = mm(board_sz, board, 0, 1);
 				board[i][j] = '_';
 				if (score > best_score) {
