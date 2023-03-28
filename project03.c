@@ -352,6 +352,10 @@ int main(int argc, char **argv)
 	}
 
 	/* interactive when argc < 4 */
+	int tflag = 1;
+	if (argc >= 2 && (!strcmp(argv[1], "-t") || !strcmp(argv[1], "--tui")))
+		tflag = 0;
+
 	board_sz = 3;
 	char board[board_sz][board_sz];
 	for (int i = 0; i < board_sz; i++) {
@@ -360,7 +364,8 @@ int main(int argc, char **argv)
 		}
 	}
 
-	system("clear");
+	if (!tflag)
+		system("clear");
 	print_board(board_sz, board);
 
 	int game_over = 1;
@@ -376,13 +381,16 @@ int main(int argc, char **argv)
 		if (!scanf("%d", &c) || c < 0 || c > 2)
 			goto scanf_error;
 
-		system("clear");
+		if (!tflag)
+			system("clear");
 		board[r][c] = 'X';
 
 		int move_r;
 		int move_c;
 		best_move(board_sz, board, &move_r, &move_c);
 		board[move_r][move_c] = 'O';
+		if (tflag)
+			printf("\n");
 		print_board(board_sz, board);
 
 		if (check_board(board_sz, board) < 1) {
