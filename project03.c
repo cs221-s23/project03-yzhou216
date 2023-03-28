@@ -375,14 +375,14 @@ int main(int argc, char **argv)
 
 		printf("row: ");
 		if (!scanf("%d", &r) || r < 0 || r > 2)
-			goto scanf_error;
+			goto scanf_err;
 
 		printf("col: ");
 		if (!scanf("%d", &c) || c < 0 || c > 2)
-			goto scanf_error;
+			goto scanf_err;
 
 		if (board[r][c] != '_')
-			goto illegal_move_error;
+			goto mv_err;
 
 		if (!tflag)
 			system("clear");
@@ -404,11 +404,11 @@ int main(int argc, char **argv)
 
 	return 0;
 
-scanf_error:
+scanf_err:
 	printf("scanf failed: illegal coordinate input\n");
 	exit(-1);
 
-illegal_move_error:
+mv_err:
 	printf("illegal move: coordinate already occupied\n");
 	exit(-1);
 }
