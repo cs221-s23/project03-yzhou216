@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
+#include <stdbool.h>
 #include <limits.h>
 
 #define USAGE "Usage: ./project03" \
@@ -50,7 +51,7 @@ int check_win(char ref) {
 int check_board(int board_sz, char board[][board_sz])
 {
 	char ref;
-	int repeated = 0;
+	bool repeated = true;
 
 	for (int i = 0; i < board_sz; i++) {
 		/* horizontal */
@@ -63,13 +64,13 @@ int check_board(int board_sz, char board[][board_sz])
 		if (ref != '_') {
 			for (int j = 1; j < board_sz; j++) {
 				if (board[i][j] != ref) {
-					repeated = 1;
+					repeated = false;
 					break;
 				}
 			}
-			if (!repeated)
+			if (repeated)
 				return check_win(ref);
-			repeated = 0;
+			repeated = true;
 		}
 
 		/* vertical */
@@ -77,13 +78,13 @@ int check_board(int board_sz, char board[][board_sz])
 		if (ref != '_') {
 			for (int j = 0; j < board_sz; j++) {
 				if (board[j][i] != ref) {
-					repeated = 1;
+					repeated = false;
 					break;
 				}
 			}
-			if (!repeated)
+			if (repeated)
 				return check_win(ref);
-			repeated = 0;
+			repeated = true;
 		}
 	}
 
@@ -95,15 +96,15 @@ int check_board(int board_sz, char board[][board_sz])
 		for (int j = 0; j < board_sz; j++) {
 			if (i == j) {
 				if (board[i][j] != ref) {
-					repeated = 1;
+					repeated = false;
 					break;
 				}
 			}
 		}
 	}
-	if (!repeated)
+	if (repeated)
 		return check_win(ref);
-	repeated = 0;
+	repeated = true;
 
 for_diag:
 	/* forward diagonal */
@@ -114,15 +115,15 @@ for_diag:
 		for (int j = 0; j < board_sz; j++) {
 			if (i + j == board_sz - 1) {
 				if (board[i][j] != ref) {
-					repeated = 1;
+					repeated = false;
 					break;
 				}
 			}
 		}
 	}
-	if (!repeated)
+	if (repeated)
 		return check_win(ref);
-	repeated = 0;
+	repeated = true;
 
 term_state:
 	/* termination state */
@@ -182,16 +183,16 @@ int mm(int board_sz, char board[][board_sz], int depth, int is_max)
 void best_mv(int board_sz, char board[][board_sz], int *mv_r, int *mv_c)
 {
 	/* check if the board is empty */
-	int repeated = 0;
+	bool repeated = true;
 	for (int i = 0; i < board_sz; i++) {
 		for (int j = 0; j < board_sz; j++) {
 			if (board[i][j] != '_') {
-				repeated = 1;
+				repeated = false;
 				break;
 			}
 		}
 	}
-	if (!repeated) {
+	if (repeated) {
 		*mv_r = 0;
 		*mv_c = 0;
 		return;
@@ -252,14 +253,14 @@ int is_int(char *str)
 
 int main(int argc, char **argv)
 {
-	int sflag = 1;
-	int interact = 1;
+	bool sflag = false;
+	bool interact = false;
 	int board_sz;
 	int board_arg_index;
 	/* start loop from argv[1] */
 	for (int i = 1; i < argc; i++) {
 		if (!strcmp(argv[i], "-s")) {
-			sflag = 0;
+			sflag = true;
 
 			if (i + 1 == argc) {
 				printf("not enough arguments\n");
@@ -284,20 +285,20 @@ int main(int argc, char **argv)
 	}
 
 	/* size flag missing: default board size to 3 */
-	if (sflag) {
+	if (!sflag) {
 		board_sz = 3;
 		board_arg_index = 1;
 	}
 
 	if (argc < 4) {
-		interact = 0;
+		interact = true;
 	}
 
 	/*
 	 * check if the `size` flag value matches the initial board input
 	 * size
 	 */
-	if (interact) {
+	if (!interact) {
 		if (argc - board_arg_index != (int) pow(board_sz, 2)) {
 			printf("invalid arguments: board size mismatch\n"
 			       "%s\n", USAGE);
@@ -354,10 +355,10 @@ int main(int argc, char **argv)
 	}
 
 	/* interactive when argc < 4 */
-	int tflag = 1;
+	bool tflag = false;
 	if (argc >= 2) {
 		if (!strcmp(argv[1], "-t") || !strcmp(argv[1], "--tui")) {
-			tflag = 0;
+			tflag = true;
 		} else {
 			printf("invalid option: %s\n%s\n", argv[1], USAGE);
 			exit(-1);
@@ -372,12 +373,12 @@ int main(int argc, char **argv)
 		}
 	}
 
-	if (!tflag)
+	if (tflag)
 		system("clear");
 	print_board(board_sz, board);
 
-	int game_over = 1;
-	while (game_over) {
+	bool game_over = false;
+	while (!game_over) {
 		int r;
 		int c;
 
@@ -392,7 +393,7 @@ int main(int argc, char **argv)
 		if (board[r][c] != '_')
 			goto mv_err;
 
-		if (!tflag)
+		if (tflag)
 			system("clear");
 		board[r][c] = 'X';
 
@@ -400,13 +401,13 @@ int main(int argc, char **argv)
 		int mv_c;
 		best_mv(board_sz, board, &mv_r, &mv_c);
 		board[mv_r][mv_c] = 'O';
-		if (tflag)
+		if (!tflag)
 			printf("\n");
 		print_board(board_sz, board);
 
 		if (check_board(board_sz, board) < 1) {
 			print_res(check_board(board_sz, board));
-			game_over = 0;
+			game_over = true;
 		}
 	}
 
