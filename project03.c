@@ -5,7 +5,8 @@
 #include <ctype.h>
 #include <limits.h>
 
-#define USAGE "Usage: ./project03 [-s board size] [initial board state]"
+#define USAGE "Usage: ./project03" \
+	      " [-s board size / -t TUI interactive mode] [initial board state]"
 
 void init_board(int board_sz, char board[][board_sz], char board_val[][2])
 {
@@ -354,8 +355,14 @@ int main(int argc, char **argv)
 
 	/* interactive when argc < 4 */
 	int tflag = 1;
-	if (argc >= 2 && (!strcmp(argv[1], "-t") || !strcmp(argv[1], "--tui")))
-		tflag = 0;
+	if (argc >= 2) {
+		if (!strcmp(argv[1], "-t") || !strcmp(argv[1], "--tui")) {
+			tflag = 0;
+		} else {
+			printf("invalid option: %s\n%s\n", argv[1], USAGE);
+			exit(-1);
+		}
+	}
 
 	board_sz = 3;
 	char board[board_sz][board_sz];
