@@ -178,7 +178,7 @@ int mm(int board_sz, char board[][board_sz], int depth, int is_max)
 	}
 }
 
-void best_mv(int board_sz, char board[][board_sz], int *move_r, int *move_c)
+void best_mv(int board_sz, char board[][board_sz], int *mv_r, int *mv_c)
 {
 	/* check if the board is empty */
 	int repeated = 0;
@@ -191,8 +191,8 @@ void best_mv(int board_sz, char board[][board_sz], int *move_r, int *move_c)
 		}
 	}
 	if (!repeated) {
-		*move_r = 0;
-		*move_c = 0;
+		*mv_r = 0;
+		*mv_c = 0;
 		return;
 	}
 
@@ -204,8 +204,8 @@ void best_mv(int board_sz, char board[][board_sz], int *move_r, int *move_c)
 				if (check_board(board_sz, board) == 1 ||
 				    check_board(board_sz, board) == -1 ||
 				    check_board(board_sz, board) == 0) {
-					*move_r = i;
-					*move_c = j;
+					*mv_r = i;
+					*mv_c = j;
 					board[i][j] = '_';
 					return;
 				}
@@ -213,8 +213,8 @@ void best_mv(int board_sz, char board[][board_sz], int *move_r, int *move_c)
 				board[i][j] = '_';
 				if (score > best_score) {
 					best_score = score;
-					*move_r = i;
-					*move_c = j;
+					*mv_r = i;
+					*mv_c = j;
 				}
 			}
 		}
@@ -342,10 +342,10 @@ int main(int argc, char **argv)
 		init_board(board_sz, board, board_val);
 		print_board(board_sz, board);
 
-		int move_r;
-		int move_c;
-		best_mv(board_sz, board, &move_r, &move_c);
-		printf("O: %d %d\n", move_r, move_c);
+		int mv_r;
+		int mv_c;
+		best_mv(board_sz, board, &mv_r, &mv_c);
+		printf("O: %d %d\n", mv_r, mv_c);
 
 		return 0;
 	}
@@ -387,10 +387,10 @@ int main(int argc, char **argv)
 			system("clear");
 		board[r][c] = 'X';
 
-		int move_r;
-		int move_c;
-		best_mv(board_sz, board, &move_r, &move_c);
-		board[move_r][move_c] = 'O';
+		int mv_r;
+		int mv_c;
+		best_mv(board_sz, board, &mv_r, &mv_c);
+		board[mv_r][mv_c] = 'O';
 		if (tflag)
 			printf("\n");
 		print_board(board_sz, board);
