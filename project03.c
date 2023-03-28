@@ -201,9 +201,11 @@ void best_mv(int board_sz, char board[][board_sz], int *mv_r, int *mv_c)
 		for (int j = 0; j < board_sz; j++) {
 			if (board[i][j] == '_') {
 				board[i][j] = 'O'; /* program */
-				if (check_board(board_sz, board) == 1 ||
-				    check_board(board_sz, board) == -1 ||
-				    check_board(board_sz, board) == 0) {
+				/*
+				 * check if the game is terminated after the
+				 * first move
+				 */
+				if (check_board(board_sz, board) <= 1) {
 					*mv_r = i;
 					*mv_c = j;
 					board[i][j] = '_';
