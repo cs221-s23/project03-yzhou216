@@ -290,9 +290,8 @@ int main(int argc, char **argv)
 		board_arg_index = 1;
 	}
 
-	if (argc < 4) {
+	if (argc < 4)
 		interact = true;
-	}
 
 	/*
 	 * check if the `size` flag value matches the initial board input
