@@ -178,8 +178,7 @@ int mm(int board_sz, char board[][board_sz], int depth, int is_max)
 	}
 }
 
-void best_move(int board_sz, char board[][board_sz],
-	       int *move_r, int *move_c)
+void best_mv(int board_sz, char board[][board_sz], int *move_r, int *move_c)
 {
 	/* check if the board is empty */
 	int repeated = 0;
@@ -345,7 +344,7 @@ int main(int argc, char **argv)
 
 		int move_r;
 		int move_c;
-		best_move(board_sz, board, &move_r, &move_c);
+		best_mv(board_sz, board, &move_r, &move_c);
 		printf("O: %d %d\n", move_r, move_c);
 
 		return 0;
@@ -390,7 +389,7 @@ int main(int argc, char **argv)
 
 		int move_r;
 		int move_c;
-		best_move(board_sz, board, &move_r, &move_c);
+		best_mv(board_sz, board, &move_r, &move_c);
 		board[move_r][move_c] = 'O';
 		if (tflag)
 			printf("\n");
