@@ -138,7 +138,7 @@ term_state:
 	return 0;
 }
 
-int mm(int board_sz, char board[][board_sz], int depth, int is_max)
+int mm(int board_sz, char board[][board_sz], int depth, bool is_max)
 {
 	if (check_board(board_sz, board) == 1)
 		return -10;
@@ -147,14 +147,14 @@ int mm(int board_sz, char board[][board_sz], int depth, int is_max)
 	else if (check_board(board_sz, board) == 0)
 		return 0;
 
-	if (is_max == 0) {
+	if (is_max) {
 		int best_score = INT_MIN;
 		for (int i = 0; i < board_sz; i++) {
 			for (int j = 0; j < board_sz; j++) {
 				if (board[i][j] == '_') {
 					board[i][j] = 'O'; /* program */
 					int score = mm(board_sz, board,
-						       depth + 1, 1);
+						       depth + 1, false);
 					board[i][j] = '_'; /* reset */
 					best_score = (int) fmax(score,
 								best_score);
@@ -169,7 +169,7 @@ int mm(int board_sz, char board[][board_sz], int depth, int is_max)
 				if (board[i][j] == '_') {
 					board[i][j] = 'X'; /* human */
 					int score = mm(board_sz, board,
-						       depth + 1, 0);
+						       depth + 1, true);
 					board[i][j] = '_'; /* reset */
 					best_score = (int) fmin(score,
 								best_score);
@@ -213,7 +213,7 @@ void best_mv(int board_sz, char board[][board_sz], int *mv_r, int *mv_c)
 					board[i][j] = '_';
 					return;
 				}
-				int score = mm(board_sz, board, 0, 1);
+				int score = mm(board_sz, board, 0, false);
 				board[i][j] = '_';
 				if (score > best_score) {
 					best_score = score;
